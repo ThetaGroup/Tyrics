@@ -50,9 +50,10 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 	 * {@inheritDoc}
 	 */
 	public void receive(String message) {
-		if (mainFrame != null) {
-			mainFrame.label.setText(message);
-			mainFrame.pack();
+		synchronized (MainFrame.class) {
+			if (mainFrame != null) {
+				mainFrame.label.setText(message);
+			}
 		}
 	}
 
