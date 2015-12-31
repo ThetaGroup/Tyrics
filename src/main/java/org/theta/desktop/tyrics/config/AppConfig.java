@@ -12,11 +12,11 @@ public class AppConfig {
 
 	private int height = 200;
 
-	private int width = 200;
+	private int width = 1920;
 
 	private Color backgroundColor = Color.WHITE;
 
-	private int locationX = 300;
+	private int locationX = 0;
 
 	private int locationY = 300;
 
@@ -32,52 +32,70 @@ public class AppConfig {
 
 	private int fontSize = 45;
 
-	public String getFontName() {
-		return fontName;
+	private int minMaxProgress = 30;
+
+	private int move = 3;
+
+	private static final AppConfig instance = new AppConfig();
+
+	private AppConfig() {
+
 	}
 
-	public int getFontStyle() {
-		return fontStyle;
+	public static String getFontName() {
+		return instance.fontName;
 	}
 
-	public int getFontSize() {
-		return fontSize;
+	public static int getFontStyle() {
+		return instance.fontStyle;
 	}
 
-	public String getPollingUrl() {
-		return pollingUrl;
+	public static int getFontSize() {
+		return instance.fontSize;
 	}
 
-	public int getLocationX() {
-		return locationX;
+	public static String getPollingUrl() {
+		return instance.pollingUrl;
 	}
 
-	public int getLocationY() {
-		return locationY;
+	public static int getLocationX() {
+		return instance.locationX;
 	}
 
-	public String getTitle() {
-		return title;
+	public static int getLocationY() {
+		return instance.locationY;
 	}
 
-	public int getHeight() {
-		return height;
+	public static String getTitle() {
+		return instance.title;
 	}
 
-	public int getWidth() {
-		return width;
+	public static int getHeight() {
+		return instance.height;
 	}
 
-	public Color getBackgroundColor() {
-		return backgroundColor;
+	public static int getWidth() {
+		return instance.width;
 	}
 
-	public int getRows() {
-		return rows;
+	public static Color getBackgroundColor() {
+		return instance.backgroundColor;
 	}
 
-	public int getCols() {
-		return cols;
+	public static int getRows() {
+		return instance.rows;
+	}
+
+	public static int getCols() {
+		return instance.cols;
+	}
+
+	public static int getMinMaxProgress() {
+		return instance.minMaxProgress;
+	}
+
+	public static int getMove() {
+		return instance.move;
 	}
 
 }

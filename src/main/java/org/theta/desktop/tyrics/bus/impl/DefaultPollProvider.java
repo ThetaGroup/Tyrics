@@ -21,20 +21,16 @@ public class DefaultPollProvider implements PollProvider {
 
 	private PollConsumer consumer;
 
-	private AppConfig appConfig;
-
 	private Queue<String> queue = new ConcurrentLinkedQueue<String>();
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static PollProvider getInstance(PollConsumer consumer,
-			AppConfig appConfig) {
+	public static PollProvider getInstance(PollConsumer consumer) {
 		if (defaultProvider == null) {
 			defaultProvider = new DefaultPollProvider();
 			defaultProvider.setConsumer(consumer);
-			defaultProvider.appConfig = appConfig;
 		}
 		return defaultProvider;
 	}
@@ -52,16 +48,23 @@ public class DefaultPollProvider implements PollProvider {
 	 * {@inheritDoc}
 	 */
 	public void start() {
-		while (true) {
-			try {
-				Thread.sleep(1000l);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		Thread pollThread = new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(1000l);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					String pollingData = pollData();
+					String showMessage = handleQueue(pollingData);
+					if (showMessage != null && !"".equals(showMessage))
+						consumer.receive(showMessage);
+				}
 			}
-			String pollingData = this.pollData();
-			String showMessage = this.handleQueue(pollingData);
-			consumer.receive(showMessage);
-		}
+		};
+		pollThread.start();
 	}
 
 	/**
@@ -99,10 +102,10 @@ public class DefaultPollProvider implements PollProvider {
 	private String pollData() {
 		String data = "";
 		try {
-			URL url = new URL(this.appConfig.getPollingUrl());
+			URL url = new URL(AppConfig.getPollingUrl());
 			URLConnection connection = url.openConnection();
-			System.out.println("Connecting Url("
-					+ this.appConfig.getPollingUrl() + ")...");
+			System.out.println("Connecting Url(" + AppConfig.getPollingUrl()
+					+ ")...");
 			connection.connect();
 			System.out.println("Connect success,polling datas...");
 			BufferedReader in = new BufferedReader(new InputStreamReader(

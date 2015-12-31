@@ -1,14 +1,11 @@
 package org.theta.desktop.tyrics.view.frame;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
-
-import javax.swing.SwingConstants;
 
 import org.theta.desktop.tyrics.bus.intf.PollConsumer;
 import org.theta.desktop.tyrics.config.AppConfig;
@@ -25,15 +22,15 @@ public class TLabelPool implements PollConsumer {
 
 	private Queue<String> messageQueue;
 
-	public TLabelPool(AppConfig appConfig, MainFrame mainFrame) {
+	public TLabelPool(MainFrame mainFrame) {
 		labelList = new ArrayList<TLabel>();
-		for (int i = 0; i < appConfig.getRows(); i++) {
+		for (int i = 0; i < AppConfig.getRows(); i++) {
 			TLabel label = new TLabel();
 			label.setText("初始化文档，就是要这么长才能让你看清楚，要不然有什么用呢？");
-			// label.setText("初始化文档");
-			label.setFont(new Font(appConfig.getFontName(), appConfig
-					.getFontStyle(), appConfig.getFontSize()));
-			label.setBounds(0, 0, appConfig.getWidth(), 100);
+			label.setFont(new Font(AppConfig.getFontName(), AppConfig
+					.getFontStyle(), AppConfig.getFontSize()));
+			label.setBounds(0, 0, AppConfig.getWidth(), 100);
+			label.setLabelName(String.valueOf(i));
 			mainFrame.add(label);
 			labelList.add(label);
 		}
@@ -49,7 +46,7 @@ public class TLabelPool implements PollConsumer {
 	}
 
 	private void beginRockAndRoll() {
-		Thread rnrThread = new Thread() {
+		final Thread actThread = new Thread() {
 			@Override
 			public void run() {
 				while (true) {
@@ -58,56 +55,39 @@ public class TLabelPool implements PollConsumer {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					if (findInActive().size() > 0 && messageQueue.size() > 0) {
-						activeOne(messageQueue.poll());
+					List<Integer> inactives = findInActive();
+					if (inactives.size() > 0 && messageQueue.size() > 0) {
+						Random random = new Random(System.currentTimeMillis());
+						int pos = random.nextInt(inactives.size());
+						TLabel label = labelList.get(inactives.get(pos));
+						label.active(messageQueue.poll());
 					}
-				}
-			}
-		};
-		rnrThread.start();
 
-		Thread actThread = new Thread() {
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(10l);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					for (TLabel label : findActive()) {
-						label.pushProgress();
+					List<Integer> actives = findActive();
+					for (Integer labelNo : actives) {
+						labelList.get(labelNo).pushProgress();
 					}
 				}
 			}
 		};
 		actThread.start();
+
 	}
 
-	private void activeOne(String message) {
-		List<TLabel> inActives = this.findInActive();
-		if (inActives.size() > 0) {
-			Random random = new Random(System.currentTimeMillis());
-			int pos = random.nextInt(inActives.size());
-			TLabel label = inActives.get(pos);
-			label.active(message);
-		}
-	}
-
-	private List<TLabel> findActive() {
-		List<TLabel> actives = new ArrayList<TLabel>();
-		for (TLabel label : labelList)
-			if (label.isActive())
-				actives.add(label);
+	private List<Integer> findActive() {
+		List<Integer> actives = new ArrayList<Integer>();
+		for (Integer i = 0; i < labelList.size(); i++)
+			if (this.labelList.get(i).isActive())
+				actives.add(i);
 		return actives;
 	}
 
-	private List<TLabel> findInActive() {
-		List<TLabel> actives = new ArrayList<TLabel>();
-		for (TLabel label : labelList)
-			if (!label.isActive())
-				actives.add(label);
-		return actives;
+	private List<Integer> findInActive() {
+		List<Integer> inactives = new ArrayList<Integer>();
+		for (Integer i = 0; i < labelList.size(); i++)
+			if (!this.labelList.get(i).isActive())
+				inactives.add(i);
+		return inactives;
 	}
 
 }

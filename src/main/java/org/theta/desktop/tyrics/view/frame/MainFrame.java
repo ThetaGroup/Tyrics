@@ -22,8 +22,6 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 
 	private static final long serialVersionUID = -7558695675589011956L;
 
-	private AppConfig appConfig;
-
 	private static MainFrame mainFrame;
 
 	private LayoutManager layout;
@@ -34,11 +32,11 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 
 	/**
 	 * 
-	 * @param appConfig
+	 * @param AppConfig
 	 */
-	public static PollConsumer getInstance(AppConfig appConfig) {
+	public static PollConsumer getInstance() {
 		if (mainFrame == null) {
-			mainFrame = new MainFrame(appConfig);
+			mainFrame = new MainFrame();
 		}
 		return mainFrame;
 	}
@@ -57,11 +55,10 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 
 	/**
 	 * 
-	 * @param appConfig
+	 * @param AppConfig
 	 */
-	private MainFrame(AppConfig appConfig) {
+	private MainFrame() {
 		super();
-		this.appConfig = appConfig;
 		this.loadConfig();
 		this.loadComponent();
 		this.loadListener();
@@ -72,23 +69,21 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
 
-		if (appConfig != null) {
-			this.setTitle(appConfig.getTitle());
-			this.setSize(appConfig.getWidth(), appConfig.getHeight());
-			this.setBackground(new Color(0, 0, 0, 0));
-			this.setLocation(appConfig.getLocationX(), appConfig.getLocationY());
-		}
+		this.setTitle(AppConfig.getTitle());
+		this.setSize(AppConfig.getWidth(), AppConfig.getHeight());
+		this.setBackground(new Color(0, 0, 0, 0));
+		this.setLocation(AppConfig.getLocationX(), AppConfig.getLocationY());
 
 		this.setVisible(true);
 	}
 
 	private void loadComponent() {
 		/** Layout init */
-		layout = new GridLayout(appConfig.getRows(), appConfig.getCols());
+		layout = new GridLayout(AppConfig.getRows(), AppConfig.getCols());
 		this.setLayout(layout);
 
 		/** Label init */
-		this.labelPool = new TLabelPool(appConfig, this);
+		this.labelPool = new TLabelPool(this);
 	}
 
 	private void loadListener() {
