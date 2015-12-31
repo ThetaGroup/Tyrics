@@ -55,14 +55,6 @@ public class TLabelPool implements PollConsumer {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					List<Integer> inactives = findInActive();
-					if (inactives.size() > 0 && messageQueue.size() > 0) {
-						Random random = new Random(System.currentTimeMillis());
-						int pos = random.nextInt(inactives.size());
-						TLabel label = labelList.get(inactives.get(pos));
-						label.active(messageQueue.poll());
-					}
-
 					List<Integer> actives = findActive();
 					for (Integer labelNo : actives) {
 						labelList.get(labelNo).pushProgress();
@@ -71,6 +63,27 @@ public class TLabelPool implements PollConsumer {
 			}
 		};
 		actThread.start();
+
+		final Thread rnrThread = new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(1l);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					List<Integer> inactives = findInActive();
+					if (inactives.size() > 0 && messageQueue.size() > 0) {
+						Random random = new Random(System.currentTimeMillis());
+						int pos = random.nextInt(inactives.size());
+						TLabel label = labelList.get(inactives.get(pos));
+						label.active(messageQueue.poll());
+					}
+				}
+			}
+		};
+		rnrThread.start();
 
 	}
 

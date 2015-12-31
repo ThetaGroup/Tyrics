@@ -44,7 +44,7 @@ public class TLabel extends JLabel {
 	}
 
 	public void active(String message) {
-		this.setLocation(oldX + oldWidth, oldY);
+		this.setLocation(-2000, oldY);
 		this.setText(message);
 		this.setActive(true);
 		this.maxProgress = message.length();
