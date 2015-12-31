@@ -54,7 +54,7 @@ public class DefaultPollProvider implements PollProvider {
 	public void start() {
 		while (true) {
 			try {
-				Thread.sleep(5000l);
+				Thread.sleep(1000l);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

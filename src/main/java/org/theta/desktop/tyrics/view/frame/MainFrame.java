@@ -1,8 +1,7 @@
 package org.theta.desktop.tyrics.view.frame;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -10,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import org.theta.desktop.tyrics.bus.intf.PollConsumer;
 import org.theta.desktop.tyrics.config.AppConfig;
@@ -30,7 +28,7 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 
 	private LayoutManager layout;
 
-	private JLabel label;
+	private TLabelPool labelPool;
 
 	private Point firstPoint = null;
 
@@ -52,7 +50,7 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 	public void receive(String message) {
 		synchronized (MainFrame.class) {
 			if (mainFrame != null) {
-				mainFrame.label.setText(message);
+				labelPool.receive(message);
 			}
 		}
 	}
@@ -86,17 +84,11 @@ public class MainFrame extends JFrame implements MouseMotionListener,
 
 	private void loadComponent() {
 		/** Layout init */
-		layout = new FlowLayout();
+		layout = new GridLayout(appConfig.getRows(), appConfig.getCols());
 		this.setLayout(layout);
 
 		/** Label init */
-		label = new JLabel();
-		label.setText("初始化文档，就是要这么长才能让你看清楚，要不然有什么用呢？");
-		label.setFont(new Font("黑体", 1, 45));
-		label.setBounds(0, 0, 100, 100);
-		this.add(label);
-
-		this.pack();
+		this.labelPool = new TLabelPool(appConfig, this);
 	}
 
 	private void loadListener() {

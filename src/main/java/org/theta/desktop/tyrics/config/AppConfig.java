@@ -8,46 +8,76 @@ import java.awt.Color;
  */
 public class AppConfig {
 
-    private String title           = "Test Title";
+	private String title = "Tyric";
 
-    private int    height          = 200;
+	private int height = 200;
 
-    private int    width           = 200;
+	private int width = 200;
 
-    private Color  backgroundColor = Color.WHITE;
+	private Color backgroundColor = Color.WHITE;
 
-    private int    locationX       = 300;
+	private int locationX = 300;
 
-    private int    locationY       = 300;
+	private int locationY = 300;
 
-    private String pollingUrl      = "http://thetawechat.sinaapp.com/polling.php";
+	private String pollingUrl = "http://thetawechat.sinaapp.com/polling.php";
 
-    public String getPollingUrl() {
-        return pollingUrl;
-    }
+	private int rows = 10;
 
-    public int getLocationX() {
-        return locationX;
-    }
+	private int cols = 1;
 
-    public int getLocationY() {
-        return locationY;
-    }
+	private String fontName = "黑体";
 
-    public String getTitle() {
-        return title;
-    }
+	private int fontStyle = 1;
 
-    public int getHeight() {
-        return height;
-    }
+	private int fontSize = 45;
 
-    public int getWidth() {
-        return width;
-    }
+	public String getFontName() {
+		return fontName;
+	}
 
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
+	public int getFontStyle() {
+		return fontStyle;
+	}
+
+	public int getFontSize() {
+		return fontSize;
+	}
+
+	public String getPollingUrl() {
+		return pollingUrl;
+	}
+
+	public int getLocationX() {
+		return locationX;
+	}
+
+	public int getLocationY() {
+		return locationY;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getCols() {
+		return cols;
+	}
 
 }
