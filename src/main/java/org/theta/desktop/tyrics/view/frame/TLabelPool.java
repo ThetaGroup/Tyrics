@@ -26,7 +26,7 @@ public class TLabelPool implements PollConsumer {
 		labelList = new ArrayList<TLabel>();
 		for (int i = 0; i < AppConfig.getRows(); i++) {
 			TLabel label = new TLabel();
-			label.setText("初始化文档，就是要这么长才能让你看清楚，要不然有什么用呢？");
+			label.setText(" 这 是 初 始 化 文 档 ， 就 是 要 这 么 长 才 能 让 你 看 清 楚 呀 ， 要 不 然 有 什 么 用 呢 ？ ");
 			label.setFont(new Font(AppConfig.getFontName(), AppConfig
 					.getFontStyle(), AppConfig.getFontSize()));
 			label.setBounds(0, 0, AppConfig.getWidth(), 100);

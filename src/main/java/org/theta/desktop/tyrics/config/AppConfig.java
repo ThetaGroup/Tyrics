@@ -18,11 +18,11 @@ public class AppConfig {
 
 	private int locationX = 0;
 
-	private int locationY = 300;
+	private int locationY = 150;
 
 	private String pollingUrl = "http://thetawechat.sinaapp.com/polling.php";
 
-	private int rows = 10;
+	private int rows = 8;
 
 	private int cols = 1;
 
@@ -32,9 +32,9 @@ public class AppConfig {
 
 	private int fontSize = 45;
 
-	private int minMaxProgress = 30;
+	private int minMaxProgress = 50;
 
-	private int move = 3;
+	private int move = 5;
 
 	private static final AppConfig instance = new AppConfig();
 
